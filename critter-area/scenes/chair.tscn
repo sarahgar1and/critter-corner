@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://643jc6bu5lfm"]
+
+[ext_resource type="Script" uid="uid://dy2s1ukxax72j" path="res://scripts/chair.gd" id="1_i2o7u"]
+[ext_resource type="FontFile" uid="uid://du1t7p48yocfk" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_hxd06"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6a4cw"]
+radius = 14.035668
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7dleu"]
+radius = 50.01
+
+[node name="Chair" type="StaticBody2D" unique_id=1923826212]
+script = ExtResource("1_i2o7u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1052919581]
+shape = SubResource("CircleShape2D_6a4cw")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1058007501]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=533889494]
+shape = SubResource("CircleShape2D_7dleu")
+
+[node name="Label" type="Label" parent="." unique_id=877755466]
+offset_left = -19.0
+offset_top = -67.0
+offset_right = 21.0
+offset_bottom = -43.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_hxd06")
+theme_override_font_sizes/font_size = 24
+text = "E"
+horizontal_alignment = 1
+
+[node name="sitMarker" type="Marker2D" parent="." unique_id=1742850870]
+position = Vector2(0, -14)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

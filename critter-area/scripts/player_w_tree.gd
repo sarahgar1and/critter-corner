@@ -8,6 +8,7 @@ var playback : AnimationNodeStateMachinePlayback
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 func _ready():
+	add_to_group("player")
 	playback = animation_tree["parameters/playback"]
 
 func _physics_process(delta: float) -> void:
@@ -35,3 +36,10 @@ func update_animation_parameters():
 	if direction:
 		animation_tree["parameters/Idle/blend_position"] = direction
 		animation_tree["parameters/Walk/blend_position"] = direction
+		animation_tree["parameters/Sit/blend_position"] = direction
+
+func sit():
+	set_physics_process(false)
+	playback.travel("Sit")
+	if OS.has_feature("web"):
+		JavaScriptBridge.eval("""window.parent.postMessage({ type: 'AVATAR_SAT_DOWN' }, '*');""")
