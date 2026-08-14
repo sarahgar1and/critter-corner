@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://643jc6bu5lfm"]
 
 [ext_resource type="Script" uid="uid://dy2s1ukxax72j" path="res://scripts/chair.gd" id="1_i2o7u"]
-[ext_resource type="FontFile" uid="uid://du1t7p48yocfk" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_hxd06"]
+[ext_resource type="FontFile" uid="uid://dc46p4c5c7nmu" path="res://assets/fonts/Silkscreen/Silkscreen-Regular.ttf" id="2_3fp06"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6a4cw"]
 radius = 14.035668
@@ -22,13 +22,13 @@ shape = SubResource("CircleShape2D_7dleu")
 
 [node name="Label" type="Label" parent="." unique_id=877755466]
 offset_left = -19.0
-offset_top = -67.0
+offset_top = -104.0
 offset_right = 21.0
-offset_bottom = -43.0
+offset_bottom = -52.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_hxd06")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("2_3fp06")
+theme_override_font_sizes/font_size = 40
 text = "E"
 horizontal_alignment = 1
 

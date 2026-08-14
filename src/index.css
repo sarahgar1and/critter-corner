@@ -1,0 +1,12 @@
+.pixel-font {
+  font-family: 'Silkscreen', monospace;
+}
+
+.center-text {
+  text-align: center;
+}
+
+body {
+  background-color: #6b9080;
+  margin: 0;                
+}

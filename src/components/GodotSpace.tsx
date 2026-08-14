@@ -19,7 +19,7 @@ export const GodotSpace: React.FC<GodotSpaceProps> = ({ onAvatarSit }) => {
 
   return (
     <iframe
-    id='canvas'
+    id='critter-area'
     src="public/godot/game.html"
     allow="autoplay"
     style={{
