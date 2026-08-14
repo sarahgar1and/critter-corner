@@ -18,20 +18,20 @@ export const GodotSpace: React.FC<GodotSpaceProps> = ({ onAvatarSit }) => {
   }, [onAvatarSit]);
 
   return (
+    <div style={{
+    width: '80vw',      // 80% of screen width
+    height: '80vh',     // 80% of screen height
+    position: 'relative',
+    borderRadius: '16px',
+    border: '5px solid #c1884e',
+    overflow: 'hidden',
+    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25)'
+  }}>
     <iframe
-    id='critter-area'
-    src="public/godot/game.html"
-    allow="autoplay"
-    style={{
-        position: 'fixed',
-        bottom: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '100%',
-        height: '56.25%',
-        border: 'none',
-        zIndex: 1000,
-    }} 
+      id='critter-area'
+      src="/critter-corner/godot/game.html"
+      allow="autoplay"
     />
+  </div>
   );
 };

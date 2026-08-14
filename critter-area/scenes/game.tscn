@@ -706,3 +706,12 @@ region_rect = Rect2(16, 0, 16, 16)
 [node name="Player" parent="." unique_id=1449345969 instance=ExtResource("1_uwrxv")]
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1292929129]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=731001029]
+follow_viewport_enabled = true
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer" unique_id=934891957]
+offset_left = -26.0
+offset_top = 283.0
+offset_right = 26.0
+offset_bottom = 323.0
