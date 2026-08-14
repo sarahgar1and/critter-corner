@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="critter-area"
+config/name="critter-corner-godot"
 run/main_scene="uid://igtahqam6yhv"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"

@@ -28,7 +28,7 @@ export const GodotSpace: React.FC<GodotSpaceProps> = ({ onAvatarSit }) => {
     boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25)'
   }}>
     <iframe
-      id='critter-area'
+      id='canvas'
       src="/critter-corner/godot/game.html"
       allow="autoplay"
     />
