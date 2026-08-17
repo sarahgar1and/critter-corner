@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://di5dt88mh81iv"]
+
+[ext_resource type="Texture2D" uid="uid://c6shr474vnxau" path="res://assets/icons.png" id="1_m0ccg"]
+[ext_resource type="Script" uid="uid://dlotyhxtis85o" path="res://scripts/join_popup.gd" id="1_uwwd5"]
+[ext_resource type="PackedScene" uid="uid://cvfrh6e1suows" path="res://scenes/texture_button.tscn" id="2_s24fr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k1mqk"]
+atlas = ExtResource("1_m0ccg")
+region = Rect2(2, 81, 109, 46)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c66av"]
+atlas = ExtResource("1_m0ccg")
+region = Rect2(50, 32, 44.094563, 16.02899)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwwd5"]
+atlas = ExtResource("1_m0ccg")
+region = Rect2(50, 48, 44, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ic024"]
+atlas = ExtResource("1_m0ccg")
+region = Rect2(50, 64, 44, 16)
+
+[node name="JoinPopup" type="Control" unique_id=23134153]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uwwd5")
+
+[node name="QuestionBox" type="TextureRect" parent="." unique_id=1864009500]
+modulate = Color(1, 1, 1, 0.84313726)
+layout_mode = 0
+offset_left = 224.0
+offset_top = 168.0
+offset_right = 927.0
+offset_bottom = 482.0
+texture = SubResource("AtlasTexture_k1mqk")
+
+[node name="Yes" parent="." unique_id=2062792902 instance=ExtResource("2_s24fr")]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 352.0
+offset_right = 332.0
+offset_bottom = 368.0
+
+[node name="No" parent="." unique_id=1851423771 instance=ExtResource("2_s24fr")]
+layout_mode = 0
+offset_left = 688.0
+offset_top = 352.0
+offset_right = 732.0
+offset_bottom = 368.0
+texture_normal = SubResource("AtlasTexture_c66av")
+texture_pressed = SubResource("AtlasTexture_uwwd5")
+texture_hover = SubResource("AtlasTexture_ic024")
+
+[connection signal="pressed" from="Yes" to="." method="_on_yes_pressed"]
+[connection signal="pressed" from="Yes" to="Yes" method="_on_pressed"]
+[connection signal="pressed" from="No" to="." method="_on_no_pressed"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3qlx37y8xq5c"
-path="res://.godot/imported/game.apple-touch-icon.png-1c5fa0a16e44c81756b55cd139e8e7da.ctex"
+uid="uid://bv38o7k0ndu4g"
+path="res://.godot/imported/idle.png-0a5838060bdb18395eb8f7087cf3189e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game.apple-touch-icon.png"
-dest_files=["res://.godot/imported/game.apple-touch-icon.png-1c5fa0a16e44c81756b55cd139e8e7da.ctex"]
+source_file="res://assets/Idle Tiny Cat/idle.png"
+dest_files=["res://.godot/imported/idle.png-0a5838060bdb18395eb8f7087cf3189e.ctex"]
 
 [params]
 

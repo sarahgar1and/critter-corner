@@ -2,6 +2,7 @@ extends StaticBody2D
 
 @onready var sit_marker: Marker2D = $sitMarker
 @onready var label: Label = $Label
+@onready var join_popup: Control = $"../../CanvasLayer/Join_Popup"
 
 var canInteract = false
 var isSitting = false
@@ -36,6 +37,7 @@ func _release():
 	#player.global_position = global_position - global_basis.x
 	
 	label.show()
+	join_popup.hide()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

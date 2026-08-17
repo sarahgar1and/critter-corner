@@ -1,3 +1,14 @@
+:root {
+  /* Room-focus geometry, shared by the Godot stage (positioned against the
+     viewport) and the bars (laid out inside .session-room's padding) so their
+     edges line up */
+  --room-pad: 1rem;
+  --room-gap: 1rem;
+  --stream-col: 22vw;
+  /* Distance from the viewport's right edge to the stage/bar right edge */
+  --stage-inset: calc(var(--room-pad) + var(--stream-col) + var(--room-gap));
+}
+
 .pixel-font {
   font-family: 'Silkscreen', monospace;
   color: #6b9080;
@@ -5,11 +16,9 @@
 
 body {
   background-color: #a4c3b2;
-  /* width: 100vw;
-  height: 100vh; */
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevents scrollbars */
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;  
@@ -21,4 +30,623 @@ body {
     height: 100%;
     border: none;
     display: block;
+}
+
+.canvas-container, .in-session {
+    width: 80vw;     
+    height: 80vh;    
+    position: relative;
+    border-radius: 16px;
+    border: 5px solid #bc8a5f;
+    overflow: hidden;
+}
+
+.in-session {
+    width: 20vw;
+    height: 20vh;
+    position: fixed;
+    bottom: 1%;
+    left: 1%;
+    z-index: 2;
+}
+
+video {
+  width: 100%;
+}
+
+/* --- Session room --- */
+
+.session-room {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--room-pad);
+  gap: var(--room-gap);
+  box-sizing: border-box;
+  background-color: #a4c3b2;
+}
+
+.stream-grid {
+  flex: 1;
+  display: grid;
+  /* Equal rows regardless of what a tile holds — a bare 1fr would let the
+     camera feed's intrinsic height grow its row */
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 0;
+  /* Keep tiles clear of the Godot view pinned to the bottom-left corner */
+  padding-bottom: 12vh;
+}
+
+/* Godot view hidden — the grid can use the full width and height */
+.session-room.no-godot .stream-grid {
+  padding-bottom: 0;
+}
+
+.session-room.no-godot .stream-bar {
+  margin-left: 0;
+}
+
+.stream-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 5px solid #bc8a5f;
+  background-color: #cce3de;
+  box-shadow: 0 20px 25px -5px #6b9080;
+}
+
+/* The user's own feed fills its tile; the profile tag floats over the bottom.
+   Both are taken out of flow so the feed can never size its grid track. */
+.self-tile {
+  gap: 0;
+}
+
+.tile-video,
+.camera-off-placeholder {
+  position: absolute;
+  inset: 0;
+}
+
+.tile-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Mirror the self-view so it reads like a mirror, not a stranger */
+  transform: scaleX(-1);
+}
+
+.video-error {
+  padding: 0 1rem;
+  font-size: 0.7rem;
+}
+
+.self-tile .self-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.stream-critter {
+  font-size: clamp(1.5rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+.stream-name {
+  font-size: clamp(0.6rem, 1.2vw, 1rem);
+}
+
+.control-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  border: 5px solid #bc8a5f;
+  background-color: #cce3de;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-label,
+.control-count {
+  font-size: 0.75rem;
+}
+
+.control-count {
+  min-width: 2.5rem;
+}
+
+.control-button {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.75rem;
+  color: #6b9080;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 3px solid #bc8a5f;
+  background-color: #eaf4f4;
+}
+
+.control-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.control-button-active {
+  background-color: #6b9080;
+  color: #eaf4f4;
+}
+
+.control-button-off {
+  background-color: #d8b48f;
+}
+
+/* Timer: its own bar across the top of the room */
+.timer-bar {
+  gap: 1.25rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.timer-readout {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1;
+  min-width: 5ch;
+}
+
+.timer-done {
+  color: #bc8a5f;
+}
+
+.timer-bar .control-button {
+  font-size: 1rem;
+  padding: 0.5rem 0.9rem;
+}
+
+/* Stream controls: along the bottom, clear of the Godot corner view */
+.stream-bar {
+  margin-left: 22vw;
+}
+
+/* --- Room-focus layout: Godot centered as the stage, streams down the side --- */
+
+/* Fills the space left of the stream column, between the timer and bottom bars */
+.canvas-container.room-stage {
+  position: fixed;
+  top: 13vh;
+  bottom: 9vh;
+  left: var(--room-pad);
+  right: var(--stage-inset);
+  width: auto;
+  height: auto;
+  z-index: 2;
+}
+
+.session-room.room-focus .stream-grid {
+  position: fixed;
+  top: var(--room-pad);
+  right: var(--room-pad);
+  bottom: var(--room-pad);
+  width: var(--stream-col);
+  padding-bottom: 0;
+  /* Tiles keep a usable height and the column scrolls once they overflow */
+  grid-auto-rows: minmax(18vh, 1fr);
+  overflow-y: auto;
+}
+
+/* The grid is out of flow, so pin the bottom bar down and clear the column.
+   .session-room's own padding already supplies --room-pad on each side, so
+   the margin only needs to cover the column and its gap. */
+.session-room.room-focus .timer-bar,
+.session-room.room-focus .stream-bar {
+  margin-left: 0;
+  margin-right: calc(var(--stream-col) + var(--room-gap));
+}
+
+.session-room.room-focus .stream-bar {
+  margin-top: auto;
+}
+
+/* Soundscape: a popup that opens upward from the bottom bar */
+.sound-menu {
+  position: relative;
+}
+
+.sound-popup {
+  position: absolute;
+  bottom: calc(100% + 0.75rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 5px solid #bc8a5f;
+  background-color: #eaf4f4;
+  box-shadow: 0 20px 25px -5px #6b9080;
+}
+
+.sound-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.75rem;
+  color: #6b9080;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+}
+
+.sound-option:hover {
+  background-color: #cce3de;
+}
+
+.sound-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.camera-off-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.6rem, 1.2vw, 1rem);
+  background-color: #6b9080;
+  color: #eaf4f4;
+}
+
+.godot-hidden {
+  display: none;
+}
+
+.self-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.3rem 0.6rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  background-color: #cce3de;
+}
+
+.self-tag:hover {
+  background-color: #eaf4f4;
+}
+
+.self-cat {
+  width: 24px;
+  height: 24px;
+}
+
+.self-name {
+  font-size: 0.7rem;
+}
+
+.self-studying {
+  font-size: 0.6rem;
+  opacity: 0.7;
+  margin-left: auto;
+}
+
+/* --- Header + profile chip --- */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.app-header h1 {
+  margin: 0.6em 0;
+}
+
+.profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 3px solid #bc8a5f;
+  background-color: #cce3de;
+}
+
+.profile-chip:hover {
+  background-color: #eaf4f4;
+}
+
+.chip-cat {
+  width: 28px;
+  height: 28px;
+}
+
+.chip-name {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.7rem;
+  color: #6b9080;
+}
+
+.chip-edit {
+  font-size: 0.55rem;
+  color: #6b9080;
+  padding: 0.15rem 0.3rem;
+  border-radius: 5px;
+  background-color: #eaf4f4;
+  opacity: 0.8;
+}
+
+.profile-chip:hover .chip-edit {
+  background-color: #ffffff;
+  opacity: 1;
+}
+
+/* --- Start + profile screens --- */
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background-color: #a4c3b2;
+  overflow-y: auto;
+}
+
+/* Editing opens over the live space, so scrim it instead of replacing it */
+.screen-overlay {
+  z-index: 10;
+  background-color: rgba(107, 144, 128, 0.85);
+}
+
+.screen-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: min(90vw, 34rem);
+  padding: 2rem;
+  box-sizing: border-box;
+  border-radius: 16px;
+  border: 5px solid #bc8a5f;
+  background-color: #cce3de;
+}
+
+.screen-kicker {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+}
+
+.screen-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+.profile-title {
+  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+}
+
+.cat-sprite {
+  /* Keep the 16px source art crisp at every size */
+  image-rendering: pixelated;
+  display: block;
+}
+
+.cat-parade {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.parade-cat {
+  width: 48px;
+  height: 48px;
+}
+
+/* Give the line of cats a gentle idle bob, staggered so they aren't in lockstep */
+.parade-cat {
+  animation: bob 1.8s ease-in-out infinite;
+}
+
+.parade-cat:nth-child(2) { animation-delay: 0.2s; }
+.parade-cat:nth-child(3) { animation-delay: 0.4s; }
+.parade-cat:nth-child(4) { animation-delay: 0.6s; }
+.parade-cat:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parade-cat { animation: none; }
+}
+
+.blurb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blurb {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  background-color: #eaf4f4;
+}
+
+.blurb-heading {
+  font-size: 0.75rem;
+}
+
+.blurb-detail {
+  font-size: 0.65rem;
+  opacity: 0.75;
+}
+
+.screen-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.big-button {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.9rem;
+  color: #6b9080;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 4px solid #bc8a5f;
+  background-color: #eaf4f4;
+}
+
+.big-button:hover:not(:disabled) {
+  background-color: #ffffff;
+}
+
+.big-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.text-button {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.65rem;
+  color: #6b9080;
+  padding: 0.3rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-decoration: underline;
+  opacity: 0.75;
+}
+
+.screen-footnote {
+  margin: 0;
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+/* --- Profile form --- */
+
+.profile-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  background-color: #eaf4f4;
+}
+
+.preview-cat {
+  width: 80px;
+  height: 80px;
+}
+
+.preview-name {
+  font-size: 0.8rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.field-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  padding: 0;
+}
+
+.field-input {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.8rem;
+  color: #6b9080;
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 3px solid #bc8a5f;
+  background-color: #eaf4f4;
+}
+
+.field-input::placeholder {
+  color: #6b9080;
+  opacity: 0.4;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+  gap: 0.5rem;
+}
+
+.cat-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 0.25rem;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-color: #eaf4f4;
+}
+
+.cat-swatch:hover {
+  border-color: #a4c3b2;
+}
+
+.cat-swatch.selected {
+  border-color: #bc8a5f;
+  background-color: #ffffff;
+}
+
+.cat-swatch .cat-sprite {
+  width: 100%;
+  height: auto;
 }

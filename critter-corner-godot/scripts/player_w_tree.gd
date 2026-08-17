@@ -6,10 +6,12 @@ var direction : Vector2
 var playback : AnimationNodeStateMachinePlayback
 
 @onready var animation_tree: AnimationTree = $AnimationTree
+@onready var join_popup: Control = $"../CanvasLayer/Join_Popup"
 
 func _ready():
 	add_to_group("player")
 	playback = animation_tree["parameters/playback"]
+	
 
 func _physics_process(delta: float) -> void:
 
@@ -41,5 +43,11 @@ func update_animation_parameters():
 func sit():
 	set_physics_process(false)
 	playback.travel("Sit")
-	if OS.has_feature("web"):
-		JavaScriptBridge.eval("""window.parent.postMessage({ type: 'AVATAR_SAT_DOWN' }, '*');""")
+	while true:
+		var completed_state = await animation_tree.animation_finished
+		if completed_state.begins_with("sit"):
+			join_popup.show()
+			break
+	
+	#if OS.has_feature("web"):
+		#JavaScriptBridge.eval("""window.parent.postMessage({ type: 'AVATAR_SAT_DOWN' }, '*');""")

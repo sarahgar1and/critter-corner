@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cvfrh6e1suows"]
+
+[ext_resource type="Texture2D" uid="uid://c6shr474vnxau" path="res://assets/icons.png" id="1_k1mqk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5xcw"]
+atlas = ExtResource("1_k1mqk")
+region = Rect2(1.9845138, 31.97101, 44.094563, 16.02899)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7n62x"]
+atlas = ExtResource("1_k1mqk")
+region = Rect2(2, 48, 44, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
+atlas = ExtResource("1_k1mqk")
+region = Rect2(2, 64, 44, 16)
+
+[node name="TextureButton" type="TextureButton" unique_id=2062792902]
+offset_left = -89.0
+offset_top = -114.0
+offset_right = -45.0
+offset_bottom = -98.0
+scale = Vector2(4, 4)
+texture_normal = SubResource("AtlasTexture_v5xcw")
+texture_pressed = SubResource("AtlasTexture_7n62x")
+texture_hover = SubResource("AtlasTexture_u5sy4")
