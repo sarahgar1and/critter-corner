@@ -25,7 +25,7 @@ export const UserVideoInput = ({ className }: UserVideoInputProps) => {
           videoRef.current.srcObject = mediaStream;
         }
       } catch (err) {
-        setError('Unable to access camera and microphone.');
+        setError('Unable to access camera.');
         console.error(err);
       }
     }

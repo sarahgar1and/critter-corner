@@ -8,19 +8,19 @@ import type { SessionLayout } from '../App';
 interface Participant {
   id: string;
   name: string;
-  critter: string;
+  cat: string;
 }
 
 // Placeholder roster until real peer connections exist
 const PARTICIPANTS: Participant[] = [
-  { id: 'p1', name: 'mossy', critter: '🐈' },
-  { id: 'p2', name: 'pebble', critter: '🐈‍⬛' },
-  { id: 'p3', name: 'juniper', critter: '🐿️' },
-  { id: 'p4', name: 'clover', critter: '🐇' },
-  { id: 'p5', name: 'acorn', critter: '🦔' },
-  { id: 'p6', name: 'willow', critter: '🦉' },
-  { id: 'p7', name: 'birch', critter: '🐢' },
-  { id: 'p8', name: 'fern', critter: '🦊' },
+  { id: 'p1', name: 'mossy', cat: 'calico' },
+  { id: 'p2', name: 'pebble', cat: 'black' },
+  { id: 'p3', name: 'juniper', cat: 'tan' },
+  { id: 'p4', name: 'clover', cat: 'creme' },
+  { id: 'p5', name: 'acorn', cat: 'grey' },
+  { id: 'p6', name: 'willow', cat: 'white' },
+  { id: 'p7', name: 'birch', cat: 'orange' },
+  { id: 'p8', name: 'fern', cat: 'brown' },
 ];
 
 // Counts include the user's own tile, which always holds the first slot
@@ -109,7 +109,7 @@ export const SessionRoom = ({
 
         {shown.map((participant) => (
           <div className="stream-tile" key={participant.id}>
-            <span className="stream-critter">{participant.critter}</span>
+            <img className="cat-sprite" src={catImage(participant.cat)} alt="" />
             <span className="pixel-font stream-name">{participant.name}</span>
           </div>
         ))}
