@@ -18,7 +18,7 @@ export const ProfileSetup = ({ onDone, onBack, initial, mode = 'create' }: Profi
 
   const trimmed = name.trim();
 
-  const submit = (event: React.FormEvent) => {
+  const submit = (event: React.SubmitEvent) => {
     event.preventDefault();
     if (!trimmed) return;
     onDone({ name: trimmed, cat, studying: studying.trim() });
@@ -45,7 +45,7 @@ export const ProfileSetup = ({ onDone, onBack, initial, mode = 'create' }: Profi
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={NAME_MAX}
-            placeholder="mossy"
+            placeholder="critter"
             autoFocus
           />
         </label>

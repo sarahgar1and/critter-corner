@@ -9,12 +9,6 @@ interface StartScreenProps {
 
 const PARADE = ['orange', 'black', 'calico', 'grey', 'creme'];
 
-const BLURBS = [
-  ['camera on', 'quiet accountability, no small talk'],
-  ['your corner', 'wander a soft pixel study space'],
-  ['stay put', 'timers, soundscapes, and nothing else'],
-];
-
 export const StartScreen = ({ onStart, returningName, onContinue }: StartScreenProps) => (
   <div className="screen">
     <div className="screen-panel start-panel">
@@ -26,15 +20,6 @@ export const StartScreen = ({ onStart, returningName, onContinue }: StartScreenP
           <img key={cat} className="cat-sprite parade-cat" src={catImage(cat)} alt="" />
         ))}
       </div>
-
-      <ul className="blurb-list">
-        {BLURBS.map(([heading, detail]) => (
-          <li key={heading} className="blurb">
-            <span className="pixel-font blurb-heading">{heading}</span>
-            <span className="pixel-font blurb-detail">{detail}</span>
-          </li>
-        ))}
-      </ul>
 
       <div className="screen-actions">
         {returningName && onContinue ? (
@@ -54,7 +39,7 @@ export const StartScreen = ({ onStart, returningName, onContinue }: StartScreenP
       </div>
 
       <p className="pixel-font screen-footnote">
-        {CATS.length} critters to choose from · arrow keys to roam
+        {CATS.length} critters to choose from · WASD/arrow keys to roam
       </p>
     </div>
   </div>

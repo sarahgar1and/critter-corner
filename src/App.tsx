@@ -77,13 +77,7 @@ export default function App() {
         ) : null}
       </header>
       <main>
-          <GodotSpace
-            onEnterSession={() => setInSession(true)}
-            inSession = {inSession}
-            hidden={inSession && !godotVisible}
-            focused={inSession && godotVisible && layout === 'room'}
-          />
-          { inSession ?
+        { inSession ?
             <SessionRoom
               profile={profile}
               onLeave={() => setInSession(false)}
@@ -96,6 +90,14 @@ export default function App() {
               }
             /> : null
           }
+          <GodotSpace
+            onEnterSession={() => setInSession(true)}
+            cat={profile?.cat}
+            inSession = {inSession}
+            hidden={inSession && !godotVisible}
+            focused={inSession && godotVisible && layout === 'room'}
+          />
+          
       </main>
       { editing ?
         <ProfileSetup

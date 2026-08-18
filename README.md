@@ -10,6 +10,10 @@ npm install
 npm run dev
 ```
 
+**GitHub Pages**
+
+https://sarahgar1and.github.io/critter-corner/
+
 ## Asset Credits (No Gen-AI)
 - [Silkscreen Font](https://fonts.google.com/specimen/Silkscreen?preview.script=Latn) 
 - [Tiny Cat](https://pop-shop-packs.itch.io/tiny-cat-pixel-asset-pack)
