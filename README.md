@@ -1,5 +1,8 @@
 # About
 
+Critter Corner is a virtual study platform for college students who want to study in a communal environment while maintaining control over their environment. Users create a profile and interact with the pixel art environment using their chosen animal avatar. The graphics are soft and low-distraction to promote focus while also providing pleasant scenery. Users enter virtual study rooms with cameras on, allowing them to see and feel the presence of other people even when they are physically studying alone. With access to the entire campus body, users are bound to find others studying at the same time as them. Users can customize what they see on their screen by limiting the number of visible video streams and hiding or resizing elements. Other features like timers and soundscapes provide simple, centralized study tools.
+
+
 # Stack
 - React + TypeScript + Vite
 - Godot
